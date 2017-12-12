@@ -30,15 +30,23 @@ class HolidaySeeder extends Seeder
         fwrite($temp, (string)$data);
         rewind($temp);
 
+        $i = 0;
         while (($data = fgetcsv($temp, 0, ",")) !== FALSE) {
-            $csv[] = $data;
 
+            if($i == 0){
+                $i++;
+                continue;
+            }
+
+            $csv[] = $data;
             $holidays[] = array(
                 'date' => $data[0],
                 'name' => $data[1],
 //                'day' => $data[2],
 //                'name' => $data[3],
             );
+
+            $i++;
         }
         fclose($temp);
 
