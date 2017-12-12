@@ -14,7 +14,6 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
         return response(Item::all());
     }
 
