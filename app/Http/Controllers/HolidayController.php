@@ -14,12 +14,14 @@ class HolidayController extends Controller
      */
     public function index()
     {
-//        return response(Holiday::all());
-
-        
-//        $seeds = explode("\n", file_get_contents(dirname(__FILE__) . "/" .'syukujitsu.csv'));
-//        echo $seeds;
-        //echo $seeds = explode("\n", file_get_contents('app/database/seeds/syukujitsu.csv'));
+        $holidays_data = Holiday::all();
+        return response()->json(
+            [
+                'data' => $holidays_data
+            ],
+            200,[],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     /**

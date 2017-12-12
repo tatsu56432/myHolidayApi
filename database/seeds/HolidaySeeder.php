@@ -34,8 +34,8 @@ class HolidaySeeder extends Seeder
             $csv[] = $data;
 
             $holidays[] = array(
-                'name' => $data[0],
-                'date' => $data[1],
+                'date' => $data[0],
+                'name' => $data[1],
 //                'day' => $data[2],
 //                'name' => $data[3],
             );

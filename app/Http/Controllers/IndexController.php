@@ -16,4 +16,9 @@ class IndexController extends Controller
         return response($users);
     }
 
+    public function getSearch($keyword) {
+        $todos = Todo::where('title', 'LIKE', '%'.$keyword.'%')->get();
+        return Response::json($todos);
+    }
+
 }
