@@ -19,5 +19,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
+Route::resource('/holidays', 'HolidayController', ['except' => ['create', 'edit']]);
 
 Route::resource('/items', 'ItemController', ['except' => ['create', 'edit']]);
