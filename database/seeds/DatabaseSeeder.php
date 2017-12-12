@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $holiday->day = $faker->dayOfMonth;
         $holiday->save();
 
+
     }
 }
