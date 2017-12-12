@@ -9,16 +9,7 @@ use \App\User;// access Model
 
 class IndexController extends Controller
 {
-
     public function index() {
-
-        $users = User::all()->toArray();
-        return response($users);
+        return '<p style="text-align: center;font-size: 30px;font-weight: bold">MyHolidayApi!</p>';
     }
-
-    public function getSearch($keyword) {
-        $todos = Todo::where('title', 'LIKE', '%'.$keyword.'%')->get();
-        return Response::json($todos);
-    }
-
 }

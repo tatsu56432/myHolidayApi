@@ -32,6 +32,7 @@ class HolidayController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
