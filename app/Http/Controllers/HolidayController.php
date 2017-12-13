@@ -20,7 +20,8 @@ class HolidayController extends Controller
                 'data' => $holidays_data
             ],
             200,[],
-            JSON_UNESCAPED_UNICODE
+            JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT
+
         );
     }
 
