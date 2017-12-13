@@ -27,3 +27,8 @@ Route::get('/', 'IndexController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/hello/{message}', function($message)
+{
+    return 'Hello World' .'  '.  $message;
+})->where('message', '[A-Za-z]+');
