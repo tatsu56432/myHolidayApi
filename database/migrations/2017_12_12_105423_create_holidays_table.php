@@ -17,10 +17,13 @@ class CreateHolidaysTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('date');
+            $table->string('year');
+            $table->string('month');
+            $table->string('day');
 //            $table->integer('year');
 //            $table->integer('month');
 //            $table->integer('day');
-            $table->timestamps();
+//            $table->timestamps();
         });
     }
 
