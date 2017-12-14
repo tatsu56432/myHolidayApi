@@ -46,7 +46,7 @@ class HolidaySeeder extends Seeder
                 'year' => $dataExploded[$i][0],
                 'month' => $dataExploded[$i][1],
                 'day' => $dataExploded[$i][2],
-                'name' => $data[1],
+                'holiday_name' => $data[1],
 //                'day' => $data[2],
 //                'name' => $data[3],
             );
