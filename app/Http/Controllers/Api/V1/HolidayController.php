@@ -58,7 +58,7 @@ class HolidayController extends Controller
     public function show($id)
     {
         $request_year = $id;
-        echo $request_year;
+        //echo $request_year;
         $current_year = date('Y');
         $prev_year = $current_year - 1;
         $next_year = $current_year + 1;
