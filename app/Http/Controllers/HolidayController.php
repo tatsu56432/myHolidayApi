@@ -75,7 +75,7 @@ class HolidayController extends Controller
 HTML;
             exit;
         }
-        
+
         return response()->json(
             [
                 $id . '年の国民の祝日' => $holidays_data
