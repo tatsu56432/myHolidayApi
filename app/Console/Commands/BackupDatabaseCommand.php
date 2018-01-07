@@ -65,7 +65,7 @@ class BackupDatabaseCommand extends Command
             $file_path
         );
 
-//     $command = 'mysqldump -h '. $this->db_host .' -u '. $this->db_user .' -p'.$this->db_pass.' '.$this->db_name.'>'.$this->store_path.$this->db_name.'.sql';
+//        $command = 'mysqldump -h '. $this->db_host .' -u '. $this->db_user .' -p'.$this->db_pass.' '.$this->db_name.'>'.$this->store_path.$this->db_name.'.sql';
 
         exec($command);
 
