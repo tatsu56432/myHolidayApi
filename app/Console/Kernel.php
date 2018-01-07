@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\BackupDatabaseCommand::class,
+        BackupDatabaseCommand::class,
     ];
 
     /**
@@ -25,8 +25,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        //DBのバックアップ
         $schedule->command('command:backupdb')->daily();
 
+        //スケジューラーでartisanコマンドを実行
+        $schedule->command('migrate:rollback')->everyMinute();
+        $schedule->command('migrate:refresh')->everyMinute();
+        $schedule->command('db:seed')->everyMinute();
 
         // $schedule->command('inspire')
         //          ->hourly();
