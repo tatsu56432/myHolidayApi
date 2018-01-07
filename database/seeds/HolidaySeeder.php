@@ -17,8 +17,17 @@ class HolidaySeeder extends Seeder
 
     private function loadHoliday()
     {
-        $file = dirname(__FILE__) . "/" . 'syukujitsu.csv';
-        $data = file_get_contents($file);
+        //csvファイルを内閣府ホームページから取得
+        $csvFileUrl = "http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv";
+        //内閣府ホームページから取得できなかった時ようにlocalにもcsvファイルを保持しておく
+        $localCsvFile = dirname(__FILE__) . "/" . 'syukujitsu.csv';
+
+        if(!empty($csvFileUrl)){
+            $data = file_get_contents($csvFileUrl);
+        }else{
+            $data = file_get_contents($localCsvFile);
+        }
+
         $data = mb_convert_encoding($data, 'UTF-8', 'sjis-win');
         $temp = tmpfile();
         $csv = array();

@@ -63,11 +63,11 @@ class HolidayController extends Controller
         $next_year = $current_year + 1;
         $holidays_data = array();
 
-        if (2016 || 2017 || 2018) {
+        if ($request_year == 2016 || $request_year == 2017 || $request_year == 2018) {
             $holidays = DB::table('holidays')->where('year', '=', $id)->get();
             foreach ($holidays as $holiday_name) {
                 //配列の追加
-                $holidays_data[] = $holiday_name->name;
+                $holidays_data[] = $holiday_name->holiday_name;
             }
         } else {
             header('location:' . '/');
