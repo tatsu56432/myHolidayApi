@@ -1,13 +1,14 @@
 
 
-##MyHolidayAPI
+## MyHolidayAPI
 
 laravelを用いて国民の祝日を返すwebAPIを作成していきます。
 
 ## 現状
 - webブラウザから特定のURLにアクセスすると国民の祝日を返すAPIです。
 - RESTfulAPIとして作成しています。    
-（http://153.121.58.103/api/v2/holidays/2018　にアクセスすると、2018年の国民の祝日一覧がjson形式で返ります。）
+（http://153.121.58.103/api/v2/holidays/2018）  
+　にアクセスすると、2018年の国民の祝日一覧がjson形式で返ります。
 
 ## 祝日のデータ取得
 国民の祝日データの取得は[内閣府のホームページ](http://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html)で配布しているCSVファイルから取得します。
