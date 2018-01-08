@@ -29,6 +29,17 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+
+Route::get('welcome/{name?}', function($name = "ゲスト") {
+    Mail::send('email.welcome', ['name' => $name], function($message) {
+        $message->to('tatsu56432@gmail.com')->subject('Welcome');
+    });
+
+    return "Welcome メッセージを $name に送りました";
+});
+
+Route::get('/mail','HomeController@send');
+
 Route::get('/hello/{message}', function($message)
 {
     return 'Hello World' .'  '.  $message;
