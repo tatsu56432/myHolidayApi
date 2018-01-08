@@ -29,9 +29,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:backupdb')->daily();
 
         //スケジューラーでDBセットアップ用のartisanコマンドを実行
-        $schedule->command('migrate:rollback')->everyMinute();
-        $schedule->command('migrate:refresh')->everyMinute();
-        $schedule->command('db:seed')->everyMinute();
+        $schedule->command('migrate:rollback')->daily();
+        $schedule->command('migrate:refresh')->daily();
+        $schedule->command('db:seed')->daily();
 
         // $schedule->command('inspire')
         //          ->hourly();
