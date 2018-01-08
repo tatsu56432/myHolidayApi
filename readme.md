@@ -24,7 +24,7 @@ laravelのタスクスケジューラを起動するには/etc/cron.d/に以下�
 
 タスクスケジューラは/myapi/app/Console/Kernel.phpに定義していますので、そちらをご参照ください。
 
-##参考にしたページのURL
+## 参考にしたページのURL
 - [Laravel 5.3 通知](https://readouble.com/laravel/5.3/ja/notifications.html)
 - [Laravel 5.3 タスクスケジュール](https://readouble.com/laravel/5.3/ja/scheduling.html)
 - [内閣府のホームページ](http://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html)
