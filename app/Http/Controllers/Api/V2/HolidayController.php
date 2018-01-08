@@ -17,14 +17,15 @@ class HolidayController extends Controller
     public function index()
     {
         $holidays_data = Holiday::all();
-        return response()->json(
-            [
-                '国民の祝日データ' => $holidays_data
-            ],
-            200, [],
-            JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
 
-        );
+            return response()
+                ->json(
+                [
+                    '国民の祝日データ' => $holidays_data
+                ],
+                200, [],
+                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+            )->header('Content-Type', 'text/plain');
     }
 
     /**
@@ -74,13 +75,14 @@ class HolidayController extends Controller
             exit;
         }
 
-        return response()->json(
-            [
-                $id . '年の国民の祝日' => $holidays_data
-            ],
-            200, [],
-            JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-        );
+            return response()->json(
+                [
+                    $id . '年の国民の祝日' => $holidays_data
+                ],
+                200, [],
+                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+            )->header('Content-Type', 'text/plain');
+
 
     }
 
