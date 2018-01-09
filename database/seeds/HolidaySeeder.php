@@ -17,12 +17,18 @@ class HolidaySeeder extends Seeder
 
     private function loadHoliday()
     {
-        $file = dirname(__FILE__) . "/" . 'syukujitsu.csv';
-        $data = file_get_contents($file);
+        //csvファイルを内閣府ホームページから取得
+        $csvFileUrl = "http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv";
+        //内閣府ホームページから取得できなかった時ようにlocalにもcsvファイルを保持しておく
+        $localCsvFile = dirname(__FILE__) . "/" . 'syukujitsu.csv';
+
+        if(!empty($csvFileUrl)){
+            $data = file_get_contents($csvFileUrl);
+        }else{
+            $data = file_get_contents($localCsvFile);
+        }
+
         $data = mb_convert_encoding($data, 'UTF-8', 'sjis-win');
-        //$data = explode("/", $data);
-        //$data = (string) $data;
-        //$data = implode($data);
         $temp = tmpfile();
         $csv = array();
 
@@ -31,15 +37,14 @@ class HolidaySeeder extends Seeder
 
         $skipCsvCount = 0;
         $i = 0;
-        while (($data = fgetcsv($temp, 0, ",")) !== FALSE) {
+        $holidays = array();
 
+        while (($data = fgetcsv($temp, 0, ",")) !== FALSE) {
             if($skipCsvCount == 0){
                 $skipCsvCount++;
                 continue;
             }
-
             $dataExploded[] = explode('-',$data[0]);
-
             $csv[] = $data;
             $holidays[] = array(
                 'date' => $data[0],
@@ -53,24 +58,9 @@ class HolidaySeeder extends Seeder
 
             $skipCsvCount++;
             $i++;
-
         }
-        fclose($temp);
 
-//        $seeds = explode("\n", file_get_contents(dirname(__FILE__) . "/" .'syukujitsu.csv'));
-//
-//        foreach ($seeds as $seed) {
-//
-//            $holiday = explode("\t", $seed);
-//
-//            $holidays[] = array(
-//                'name'			=> $holiday[0],
-//                'year'			=> $holiday[1],
-//                'month'		=> $holiday[2],
-//                'day'		=> $holiday[3],
-//            );
-//
-//        }
+        fclose($temp);
 
         return $holidays;
 

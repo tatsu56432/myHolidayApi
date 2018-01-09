@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\BackupDatabaseCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        BackupDatabaseCommand::class,
     ];
 
     /**
@@ -24,6 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        //DBのバックアップ
+        $schedule->command('command:backupdb')->daily();
+
+        //スケジューラーでDBセットアップ用のartisanコマンドを実行
+        $schedule->command('migrate:rollback')->daily();
+        $schedule->command('migrate:refresh')->daily();
+        $schedule->command('db:seed')->daily();
+
         // $schedule->command('inspire')
         //          ->hourly();
     }

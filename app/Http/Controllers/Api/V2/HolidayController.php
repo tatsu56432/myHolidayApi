@@ -17,14 +17,15 @@ class HolidayController extends Controller
     public function index()
     {
         $holidays_data = Holiday::all();
-        return response()->json(
-            [
-                '国民の祝日データ' => $holidays_data
-            ],
-            200, [],
-            JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
 
-        );
+            return response()
+                ->json(
+                [
+                    '国民の祝日データ' => $holidays_data
+                ],
+                200, [],
+                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+            )->header('Content-Type', 'text/plain');
     }
 
     /**
@@ -58,33 +59,30 @@ class HolidayController extends Controller
     public function show($id)
     {
         $request_year = $id;
-        //echo $request_year;
         $current_year = date('Y');
         $prev_year = $current_year - 1;
         $next_year = $current_year + 1;
+        $holidays_data = array();
 
-        if ($request_year == $current_year || $request_year == $prev_year || $request_year == $next_year) {
+        if ($request_year == 2016 || $request_year == 2017 || $request_year == 2018) {
             $holidays = DB::table('holidays')->where('year', '=', $id)->get();
             foreach ($holidays as $holiday_name) {
+                //配列の追加
                 $holidays_data[] = $holiday_name->holiday_name;
             }
         } else {
-            echo <<< HTML
-<p style="text-align: center">ごめんね！URLの入力欄には現在から前後3年の西暦を半角英数字で入れてね！</p>
-<p style="text-align: center">例：/api/holidays/{$prev_year}</p>
-<p style="text-align: center">例：/api/holidays/{$current_year}</p>
-<p style="text-align: center">例：/api/holidays/{$next_year}</p>
-HTML;
+            header('location:' . '/');
             exit;
         }
 
-        return response()->json(
-            [
-                $id . '年の国民の祝日' => $holidays_data
-            ],
-            200, [],
-            JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-        );
+            return response()->json(
+                [
+                    $id . '年の国民の祝日' => $holidays_data
+                ],
+                200, [],
+                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+            )->header('Content-Type', 'text/plain');
+
 
     }
 
