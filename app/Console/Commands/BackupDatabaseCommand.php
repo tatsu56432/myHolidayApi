@@ -4,6 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+//use App\Http\Requests;
+use Mail;
+use App\Mail\HogeShipped;
+use App\Mail\NoteDumpResult;
+
 class BackupDatabaseCommand extends Command
 {
     /**
@@ -18,7 +23,7 @@ class BackupDatabaseCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'store DataBase dump data';
 
     protected $db_host;
     protected $db_user;
@@ -56,6 +61,7 @@ class BackupDatabaseCommand extends Command
         // ファイルフルパス
         $file_path = sprintf('%s/%s', $this->store_path, $file_name);
 
+
         $command = sprintf(
             'mysqldump -h %s -u %s -p%s %s > %s',
             $this->db_host,
@@ -65,9 +71,46 @@ class BackupDatabaseCommand extends Command
             $file_path
         );
 
+        $execFailed = null;
+        $execRemoveDbFailed = null;
+
+        $commandRemoveDbBackup = sprintf('rm -f /tmp/*.sql');
+
+
+        exec($commandRemoveDbBackup, $output, $execRemoveDbFailed);
+        exec($command, $output, $execFailed);
 //        $command = 'mysqldump -h '. $this->db_host .' -u '. $this->db_user .' -p'.$this->db_pass.' '.$this->db_name.'>'.$this->store_path.$this->db_name.'.sql';
 
-        exec($command);
+        if (!$execFailed) {
+            $options = [
+                'from' => 't_nakajima@bbmedia.co.jp',
+                'from_jp' => 'no-reply',
+                'to' => 'tatsu56432@gmail.com',
+                'subject' => '国民の祝日APIのDBのバックアップに失敗しました。',
+                'template' => 'email.dumpFailed', // resources/views/emails/hoge/mail.blade.php
+            ];
+
+            $data = [
+                'text' => "国民の祝日APIのDBのバックアップに失敗しました。",
+            ];
+
+            Mail::to($options['to'])->send(new NoteDumpResult($options, $data));
+
+        } elseif(!$execRemoveDbFailed){
+            $options = [
+                'from' => 't_nakajima@bbmedia.co.jp',
+                'from_jp' => 'no-reply',
+                'to' => 'tatsu56432@gmail.com',
+                'subject' => 'DBのバックアップファイルの削除が失敗しました。',
+                'template' => 'email.deleteFailed',
+            ];
+
+            $data = [
+                'text' => 'DBのバックアップファイルの削除が失敗しました。',
+            ];
+
+            Mail::to($options['to'])->send(new HogeShipped($options, $data));
+        }
 
     }
 }
