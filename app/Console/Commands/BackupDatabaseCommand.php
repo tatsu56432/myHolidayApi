@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 //use App\Http\Requests;
 use Mail;
 use App\Mail\HogeShipped;
+use App\Mail\OrderShipped;
 use App\Mail\NoteDumpResult;
 
 class BackupDatabaseCommand extends Command
@@ -81,7 +82,8 @@ class BackupDatabaseCommand extends Command
         exec($command, $output, $execFailed);
 //        $command = 'mysqldump -h '. $this->db_host .' -u '. $this->db_user .' -p'.$this->db_pass.' '.$this->db_name.'>'.$this->store_path.$this->db_name.'.sql';
 
-        if (!$execFailed) {
+
+        if ($execFailed) {
             $options = [
                 'from' => 't_nakajima@bbmedia.co.jp',
                 'from_jp' => 'no-reply',
@@ -91,26 +93,25 @@ class BackupDatabaseCommand extends Command
             ];
 
             $data = [
-                'text' => "国民の祝日APIのDBのバックアップに失敗しました。",
+                'text' => "国民の祝日APIのDBのバックアップに失敗しました。DBの状態を確認してください。",
             ];
 
-            Mail::to($options['to'])->send(new NoteDumpResult($options, $data));
+            Mail::to($options['to'])->send(new HogeShipped($options, $data));
 
-        } elseif(!$execRemoveDbFailed){
+        } elseif($execRemoveDbFailed) {
             $options = [
                 'from' => 't_nakajima@bbmedia.co.jp',
                 'from_jp' => 'no-reply',
                 'to' => 'tatsu56432@gmail.com',
                 'subject' => 'DBのバックアップファイルの削除が失敗しました。',
-                'template' => 'email.deleteFailed',
+                'template' => 'email.hoge.mail',
             ];
 
             $data = [
-                'text' => 'DBのバックアップファイルの削除が失敗しました。',
+                'text' => 'DBのバックアップファイルの削除が失敗しました。/tmpディレクトリ内のバックアップファイルの確認をお願いします。',
             ];
 
-            Mail::to($options['to'])->send(new HogeShipped($options, $data));
+            Mail::to($options['to'])->send(new OrderShipped($options, $data));
         }
-
     }
 }
