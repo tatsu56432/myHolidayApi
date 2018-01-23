@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 use Mail;
 use App\Mail\HogeShipped;
 use App\Mail\OrderShipped;
-use App\Mail\NoteDumpResult;
 
 class BackupDatabaseCommand extends Command
 {
