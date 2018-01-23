@@ -11,14 +11,16 @@ class HogeShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
+
     public $options;
     public $data;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($options, $data)
+    public function __construct($options,$data)
     {
         $this->options = $options;
         $this->data = $data;

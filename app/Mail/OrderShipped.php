@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NoteDumpResult extends Mailable
+class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,11 +19,10 @@ class NoteDumpResult extends Mailable
      *
      * @return void
      */
-    public function __construct($options, $data)
+    public function __construct($options,$data)
     {
-        $this->option = $options;
+        $this->options = $options;
         $this->data = $data;
-
     }
 
     /**
