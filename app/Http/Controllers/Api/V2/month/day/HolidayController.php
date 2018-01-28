@@ -65,8 +65,8 @@ class HolidayController extends Controller
             echo  $id . '年'. $month .'月'. $day .'日の国民の祝日は登録されていません。';
             exit;
         }else{
-            foreach ($holidays as $holiday_name){
-                $holidays_data[] = $holiday_name->holiday_name;
+            foreach ($holidays as $holiday_info){
+                $holidays_data[$holiday_info->date] = $holiday_info->holiday_name;
             }
         }
 
