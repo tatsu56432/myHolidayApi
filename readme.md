@@ -11,7 +11,7 @@ http://yourApiDomain/api/v2/holidays/2018
 　にアクセスすると、2018年の国民の祝日一覧がjson形式で返ります。
 http://yourApiDomain/api/v2/holidays/2018/5  
 　にアクセスすると、2018年5月の国民の祝日一覧がjson形式で返ります。
-http://yourApiDomain/api/v2/holidays/2018/5/5
+http://yourApiDomain/api/v2/holidays/2018/5/5  
 　にアクセスすると、2018年5月5日が国民の祝日かどうか返します。
 
 ## 祝日のデータ取得
