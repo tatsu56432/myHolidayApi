@@ -69,9 +69,10 @@ class HolidayController extends Controller
             exit;
         }else{
             $holidays = DB::table('holidays')->where('year', '=', $id)->get();
-            foreach ($holidays as $holiday_name) {
+            foreach ($holidays as $holiday_info) {
                 //配列の追加
-                $holidays_data[] = $holiday_name->holiday_name;
+                $holidays_data[$holiday_info->date] = $holiday_info->holiday_name;
+
             }
         }
 
