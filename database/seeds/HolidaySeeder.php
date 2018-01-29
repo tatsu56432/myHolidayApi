@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use \App\Holiday;
 
 class HolidaySeeder extends Seeder
 {
@@ -11,8 +12,20 @@ class HolidaySeeder extends Seeder
      */
     public function run()
     {
+
         $holidays = self::loadHoliday();
-        DB::table('holidays')->insert($holidays);
+
+        //DBのholidayテーブルないのrレコードの存在チェック
+        //レコードがあった場合truncateしてから再度insertする。(データ更新)
+        //レコードがなかった場合普通にinsertする。(データ挿入)
+        $tableRecord = DB::table('holidays')->where('id', '=', '1')->get();
+        if ( count($tableRecord) == 0 ){
+            DB::table('holidays')->insert($holidays);
+        }else{
+            DB::table('holidays')->truncate($holidays);
+            DB::table('holidays')->insert($holidays);
+        }
+
     }
 
     private function loadHoliday()

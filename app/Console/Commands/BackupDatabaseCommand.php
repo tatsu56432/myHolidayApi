@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Mail;
 use App\Mail\HogeShipped;
 use App\Mail\OrderShipped;
+use App\Mail\NoteDumpResult;
 
 class BackupDatabaseCommand extends Command
 {
@@ -30,6 +31,8 @@ class BackupDatabaseCommand extends Command
     protected $db_pass;
     protected $db_name;
     protected $store_path;
+    protected $admin_user_mail_from;
+    protected $admin_user_mail;
 
     /**
      * Create a new command instance.
@@ -45,6 +48,8 @@ class BackupDatabaseCommand extends Command
         $this->db_pass = env('DB_PASSWORD');  // DBパスワード
         $this->db_name = env('DB_DATABASE');  // バックアップ対象スキーマ
         $this->store_path = '/tmp';           // 保存先ディレクトリ
+        $this->admin_user_mail_from = env('ADMIN_USER_MAIL_FROM'); //from用管理者用メールアドレス
+        $this->admin_user_mail = env('ADMIN_USER_MAIL'); //管理者用メールアドレス
 
     }
 
@@ -84,9 +89,9 @@ class BackupDatabaseCommand extends Command
 
         if ($execFailed) {
             $options = [
-                'from' => 't_nakajima@bbmedia.co.jp',
+                'from' => $this->admin_user_mail_from,
                 'from_jp' => 'no-reply',
-                'to' => 'tatsu56432@gmail.com',
+                'to' => $this->admin_user_mail,
                 'subject' => '国民の祝日APIのDBのバックアップに失敗しました。',
                 'template' => 'email.dumpFailed', // resources/views/emails/hoge/mail.blade.php
             ];
@@ -99,9 +104,9 @@ class BackupDatabaseCommand extends Command
 
         } elseif($execRemoveDbFailed) {
             $options = [
-                'from' => 't_nakajima@bbmedia.co.jp',
+                'from' => $this->admin_user_mail_from,
                 'from_jp' => 'no-reply',
-                'to' => 'tatsu56432@gmail.com',
+                'to' => $this->admin_user_mail,
                 'subject' => 'DBのバックアップファイルの削除が失敗しました。',
                 'template' => 'email.hoge.mail',
             ];
