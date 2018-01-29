@@ -16,16 +16,29 @@ class HolidayController extends Controller
      */
     public function index()
     {
-        $holidays_data = Holiday::all();
 
-        return response()
-            ->json(
-                [
-                    '国民の祝日データ' => $holidays_data
-                ],
-                200, [],
-                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-            )->header('Content-Type', 'text/json');
+        $admin_contactInfo = env('ADMIN_USER_MAIL');
+        $holidays_data = Holiday::all();
+        $holiday_info_array =array();
+
+        if(is_null($holidays_data)){
+            echo "国民の祝日のデータが未登録の状態です。大変お手数ですが、{$admin_contactInfo}までご連絡いただけると幸いです。";
+        }else{
+
+            foreach ($holidays_data as $holiday_info){
+                $holiday_info_array[$holiday_info->date] = $holiday_info->holiday_name;
+            }
+
+            return response()
+                ->json(
+                    [
+                        '国民の祝日全データ' => $holiday_info_array
+                    ],
+                    200, [],
+                    JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
+                )->header('Content-Type', 'text/json');
+        }
+
     }
 
     /**
