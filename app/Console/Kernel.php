@@ -26,12 +26,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //DBのバックアップ
-        $schedule->command('command:backupdb')->everyMinute();
+        $schedule->command('command:backupdb')->daily();
 
         //スケジューラーでDBセットアップ用のartisanコマンドを実行
-        $schedule->command('migrate:rollback')->everyMinute();
-        $schedule->command('migrate:refresh')->everyMinute();
-        $schedule->command('db:seed')->everyMinute();
+//        $schedule->command('migrate:rollback')->everyMinute();
+//        $schedule->command('migrate:refresh')->everyMinute();
+        $schedule->command('db:seed')->daily();
 
         // $schedule->command('inspire')
         //          ->hourly();
