@@ -66,9 +66,10 @@ class HolidayController extends Controller
 
         if ($request_year == 2016 || $request_year == 2017 || $request_year == 2018) {
             $holidays = DB::table('holidays')->where('year', '=', $id)->get();
-            foreach ($holidays as $holiday_name) {
+            foreach ($holidays as $holiday_info) {
                 //配列の追加
-                $holidays_data[] = $holiday_name->holiday_name;
+                $holidays_data[$holiday_info->date] = $holiday_info->holiday_name;
+
             }
         } else {
             header('location:' . '/');
