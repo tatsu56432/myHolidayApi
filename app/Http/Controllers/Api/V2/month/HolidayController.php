@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V2;
+namespace App\Http\Controllers\Api\V2\month;
 
 use App\Holiday;
 use App\Http\Controllers\Controller;
@@ -16,16 +16,7 @@ class HolidayController extends Controller
      */
     public function index()
     {
-        $holidays_data = Holiday::all();
 
-        return response()
-            ->json(
-                [
-                    '国民の祝日データ' => $holidays_data
-                ],
-                200, [],
-                JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-            )->header('Content-Type', 'text/json');
     }
 
     /**
@@ -58,37 +49,36 @@ class HolidayController extends Controller
      */
     public function show($id)
     {
+
+
+    }
+
+
+    public function showMonth($id,$month){
+
+        $monthConverted = sprintf("%02d", $month);
+
         $holidays_data = array();
+        $holidays = DB::table('holidays')->where('year', '=', $id)->where('month', '=', $monthConverted)->get();
+        $request_month_flag = DB::table('holidays')->where('year', '=', $id)->where('month', '=', $monthConverted)->first();
 
-        //requestされた年数のrecordの存在チェック
-        $request_year_flag = DB::table('holidays')->where('year', '=', $id)->first();
-
-        if(is_null($request_year_flag)){
-//            header('location:' . '/');
-            echo  $id . '年の国民の祝日は登録されていません。';
+        if(is_null($request_month_flag)){
+            echo  $id . '年'. $month .'月の国民の祝日は登録されていません。';
             exit;
         }else{
-            $holidays = DB::table('holidays')->where('year', '=', $id)->get();
             foreach ($holidays as $holiday_info) {
                 //配列の追加
-                $holidays_data[$holiday_info->date] = $holiday_info->holiday_name;
-
+                $holidays_data[$holiday_info -> date] = $holiday_info -> holiday_name;
             }
         }
 
         return response()->json(
             [
-                $id . '年の国民の祝日' => $holidays_data
+                $id . '年'. $monthConverted .'月の国民の祝日' => $holidays_data
             ],
             200, [],
             JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
         )->header('Content-Type', 'text/json');
-    }
-
-    public function showDay($day){
-
-        echo $day;
-
 
     }
 
