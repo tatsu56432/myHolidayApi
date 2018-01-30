@@ -62,7 +62,7 @@ class HolidayController extends Controller
         $request_day_flag = DB::table('holidays')->where('year', '=', $id)->where('month', '=', $monthConverted)->where('day', '=', $dayConverted)->first();
 
         if(is_null($request_day_flag)){
-            echo  $id . '年'. $month .'月'. $day .'日の国民の祝日は登録されていません。';
+            echo  $id . '年'. $month .'月'. $day .'日は国民の祝日ではありません。';
             exit;
         }else{
             foreach ($holidays as $holiday_info){
