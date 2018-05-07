@@ -6,6 +6,7 @@ laravelを用いて国民の祝日を返すwebAPIを作成していきます。
 
 ## 現状
 - webブラウザから特定のURLにアクセスすると国民の祝日を返すAPIです。
+- 振替休日も返すようになっています。
 - RESTfulAPIとして作成しています。    
 http://yourApiDomain/api/v2/holidays/2018  
 　にアクセスすると、2018年の国民の祝日一覧がjson形式で返ります。
