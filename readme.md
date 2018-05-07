@@ -24,7 +24,7 @@ http://yourApiDomain/api/v2/holidays/2018/5/5
 
 
 ## DBの更新方法
-laravelのタスクスケジューラを用い、artisanコマンドを実行させることによりDBのアップデートを自動で行います。
+laravelのタスクスケジューラを用い、artisanコマンドを実行させることによりDBのアップデートをアプリケーションが自動で行います。
 laravelのタスクスケジューラを起動するには/etc/cron.d/に以下のCronエントリを追加する必要があります。
 
 '* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1'
