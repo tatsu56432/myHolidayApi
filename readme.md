@@ -1,40 +1,42 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+## MyHolidayAPI
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+laravelを用いて国民の祝日を返すwebAPIを作成していきます。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 現状
+- webブラウザから特定のURLにアクセスすると国民の祝日を返すAPIです。
+- RESTfulAPIとして作成しています。    
+http://yourApiDomain/api/v2/holidays/2018  
+　にアクセスすると、2018年の国民の祝日一覧がjson形式で返ります。
+http://yourApiDomain/api/v2/holidays/2018/5  
+　にアクセスすると、2018年5月の国民の祝日一覧がjson形式で返ります。
+http://yourApiDomain/api/v2/holidays/2018/5/5  
+　にアクセスすると、2018年5月5日が国民の祝日かどうか返します。
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+## 祝日のデータ取得
+国民の祝日データの取得は[内閣府のホームページ](http://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html)で配布しているCSVファイルから取得します。
+内閣府のホームページからのCSVファイルの取得に失敗したら、アプリケーション内で保持しているCSVをロードするようになっています。
+ですので国民の祝日データはCSVファイルに記載されているデータに由来します。(2018年1月28日現在、CSVファイルに記載されているデータ年数は2016年~2018年までです。)  
+毎日（深夜0時）にDBのバックアップを行い、かつDBの更新を自動で行うようになっています。
+またDBのバックアップと既存のダンプデータの削除に失敗した場合、管理者にメールが送信されるようになっています。
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+## DBの更新方法
+laravelのタスクスケジューラを用い、artisanコマンドを実行させることによりDBのアップデートを自動で行います。
+laravelのタスクスケジューラを起動するには/etc/cron.d/に以下のCronエントリを追加する必要があります。
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+'* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1'
 
-## Contributing
+タスクスケジューラは/myapi/app/Console/Kernel.phpに定義していますので、そちらをご参照ください。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
 
-## Security Vulnerabilities
+## 参考にしたページのURL
+- [Laravel 5.3 通知](https://readouble.com/laravel/5.3/ja/notifications.html)
+- [Laravel 5.3 タスクスケジュール](https://readouble.com/laravel/5.3/ja/scheduling.html)
+- [内閣府のホームページ](http://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html)
+- [DBに格納するCSVファイル](http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
