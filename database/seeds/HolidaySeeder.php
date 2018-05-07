@@ -52,6 +52,17 @@ class HolidaySeeder extends Seeder
         $i = 0;
         $holidays = array();
 
+        //要素順に(日:0〜土:6)を設定
+        $day_of_the_week = [
+            '日', //0
+            '月', //1
+            '火', //2
+            '水', //3
+            '木', //4
+            '金', //5
+            '土', //6
+        ];
+
         while (($data = fgetcsv($temp, 0, ",")) !== FALSE) {
             if($skipCsvCount == 0){
                 $skipCsvCount++;
@@ -59,23 +70,47 @@ class HolidaySeeder extends Seeder
             }
             $dataExploded[] = explode('-',$data[0]);
             $csv[] = $data;
+
+            //曜日を取得
+            $date = date('w', strtotime($data[0]));
+
+            $day_of_the_week[$date];
             $holidays[] = array(
                 'date' => $data[0],
                 'year' => $dataExploded[$i][0],
                 'month' => $dataExploded[$i][1],
                 'day' => $dataExploded[$i][2],
                 'holiday_name' => $data[1],
-//                'day' => $data[2],
-//                'name' => $data[3],
+                'day_of_the_week' => $day_of_the_week[$date] . "曜日",
             );
-
             $skipCsvCount++;
             $i++;
+
+            //振替休日判定
+            if($day_of_the_week[$date] === "日"){
+                //国民の祝日が日曜日の場合は振替休日として次の日のデータに変更して再度データ挿入
+                $Substitute_holiday = date('Y-m-d', strtotime($data[0] . '+1 day'));
+                $date = date('w', strtotime($data[0] . '+1 day'));
+                $dataExploded[] = explode('-',$Substitute_holiday);
+
+                $holidays[] = array(
+                    'date' => $Substitute_holiday,
+                    'year' => $dataExploded[$i][0],
+                    'month' => $dataExploded[$i][1],
+                    'day' => $dataExploded[$i][2],
+                    'holiday_name' => '振替休日',
+                    'day_of_the_week' => $day_of_the_week[$date] . "曜日",
+                );
+                $skipCsvCount++;
+                $i++;
+            }
+
         }
 
         fclose($temp);
 
         return $holidays;
+
 
     }
 

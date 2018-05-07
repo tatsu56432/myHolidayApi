@@ -20,6 +20,7 @@ class CreateHolidaysTable extends Migration
             $table->string('year');
             $table->string('month');
             $table->string('day');
+            $table->string('day_of_the_week');
 //            $table->integer('year');
 //            $table->integer('month');
 //            $table->integer('day');
